@@ -1,0 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = "org.kaakaa.spark.SampleMain"
+
+dependencies {
+    compile 'com.sparkjava:spark-core:2.1'
+    testCompile "junit:junit:4.11"
+}
+
+jar {
+    manifest.attributes('Main-Class': mainClassName)
+}
