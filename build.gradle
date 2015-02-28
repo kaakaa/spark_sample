@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'war'
 
 repositories {
     mavenCentral()
@@ -9,6 +10,7 @@ mainClassName = "org.kaakaa.spark.SampleMain"
 
 dependencies {
     compile 'com.sparkjava:spark-core:2.1'
+    providedCompile 'javax.servlet:servlet-api:2.5'
     testCompile "junit:junit:4.11"
 }
 
