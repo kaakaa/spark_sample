@@ -1,12 +1,15 @@
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'war'
+apply plugin: 'maven-publish'
 
 repositories {
     mavenCentral()
 }
 
+group = 'org.kaakaa'
 mainClassName = "org.kaakaa.spark.SampleMain"
+version = '0.1.0-SNAPSHOT'
 
 dependencies {
     compile 'com.sparkjava:spark-core:2.1'
@@ -14,6 +17,47 @@ dependencies {
     testCompile "junit:junit:4.11"
 }
 
+
 jar {
     manifest.attributes('Main-Class': mainClassName)
 }
+
+publishing {
+    publications {
+        mod1(MavenPublication) {
+            from components.java
+            artifact(sourceJar)
+            artifact(javadocJar)
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username 'admin'
+                password 'admin123'
+            }
+            name "nexus"
+            url "http://0.0.0.0:8081/nexus/content/repositories/snapshots/"
+        }
+    }
+}
+
+task sourceJar(type: Jar) {
+    classifier 'sources'
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier 'javadoc'
+    from javadoc.destinationDir
+}
+
+task localDeploy(type: Copy) {
+    from tasks['war'].outputs.files.singleFile.parent
+    into 'into' 
+    include "*.war"
+    exclude "*SNAPSHOT"
+}
+
+localDeploy.mustRunAfter war
+build.dependsOn localDeploy
