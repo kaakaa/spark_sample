@@ -54,7 +54,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 task localDeploy(type: Copy) {
     from tasks['war'].outputs.files.singleFile.parent
-    into 'into' 
+    into '/tmp' 
     include "*.war"
     exclude "*SNAPSHOT"
 }
