@@ -53,10 +53,13 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 task localDeploy(type: Copy) {
+    "sudo cp ${tasks['war'].outputs.files.singleFile.toString()} /usr/share/tomcat/webapps/"
+    /**
     from tasks['war'].outputs.files.singleFile.parent
     into '/tmp' 
     include "*.war"
     exclude "*SNAPSHOT"
+    */
 }
 
 localDeploy.mustRunAfter war
